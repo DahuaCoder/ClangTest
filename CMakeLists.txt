@@ -1,10 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
-project(Calculator)
+project(Calc)
 
 # The version number.
-set (Calculator_VERSION_MAJOR 1)
-set (Calculator_VERSION_MINOR 0)
-
+set (Calc_VERSION_MAJOR 1)
+set (Calc_VERSION_MINOR 0)
 
 # configure a header file to pass some of the CMake settings
 # to the source code.
@@ -18,13 +17,20 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-# Cmake test
-enable_testing()
+# external libraries
+add_subdirectory(externals)
+
+# set path to externals
+set(EXTERNALS_INC_DIR ${PROJECT_SOURCE_DIR}/externals/include)
+set(EXTERNALS_LIB_DIR ${PROJECT_SOURCE_DIR}/externals/lib)
+
+set(CMAKE_INCLUDE_PATH ${EXTERNALS_INC_DIR} ${CMAKE_INCLUDE_PATH})
+set(CMAKE_LIBRARY_PATH ${EXTERNALS_LIB_DIR} ${CMAKE_LIBRARY_PATH})
+
 
 #
 # Generic Compiler Flags
 #
-
 include(CheckCXXCompilerFlag)
 enable_language(CXX)
 
@@ -45,6 +51,11 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
 endif()
 
+
+# set path to additional cmake modules
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
+
+
 # set project include directory
 set(${PROJECT_NAME}_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${@PROJECT_NAME@_INCLUDE_DIRS})
@@ -55,4 +66,18 @@ add_subdirectory(src)
 
 # set installation prefix
 set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR})
+
+
+# unit test require gmock
+find_package(GMock)
+set(GMOCK_LIBRARY_DIRS ${CMAKE_SOURCE_DIR}/externals)
+
+if(GMOCK_FOUND)
+    add_subdirectory(unittests)
+endif()
+
+
+# Cmake test
+enable_testing()
+
 
