@@ -44,11 +44,14 @@ else(COMPILER_KNOWS_CXX11)
     endif(COMPILER_KNOWS_CXX0X)
 endif(COMPILER_KNOWS_CXX11)
 
+# Generic compiler flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pthread")
+
 # Determine compiler
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -std=c++1y -O1 -fno-omit-frame-pointer -g -v")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -g -v -W")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pthread")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ")
     execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
 endif()
 

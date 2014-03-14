@@ -15,7 +15,7 @@ set(${PROJECT_NAME}_UNITTEST_INCLUDE_DIRS
 
 if(GTEST_FOUND AND GMOCK_FOUND)
   include_directories(${@PROJECT_NAME@_UNITTEST_INCLUDE_DIRS})
-    
+
   function(register_test TEST_FILE)
       get_filename_component(TEST_NAME ${TEST_FILE} NAME)
       message(STATUS "Adding " ${TEST_NAME})
@@ -51,18 +51,14 @@ if(GTEST_FOUND AND GMOCK_FOUND)
     ${GMOCK_BOTH_LIBRARIES} 
     ${@PROJECT_NAME@_LIBRARIES}
     ${Boost_LIBRARIES})
-  if(UNIX)
     find_package(Threads) # GTest needs this and it's a static library
-    set(${PROJECT_NAME}_UNITTEST_LIBRARIES 
-      ${@PROJECT_NAME@_UNITTEST_LIBRARIES} 
-      ${CMAKE_THREAD_LIBS_INIT})
-  endif()  
+    set(${PROJECT_NAME}_UNITTEST_LIBRARIES ${@PROJECT_NAME@_UNITTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
   include_directories(${@PROJECT_NAME@_UNITTEST_INCLUDE_DIRS})
   add_executable(${@PROJECT_NAME@_UNITTEST_NAME} ${@PROJECT_NAME@_UNITTEST_SOURCES})
   target_link_libraries(${@PROJECT_NAME@_UNITTEST_NAME} ${@PROJECT_NAME@_UNITTEST_LIBRARIES} )
+  install(TARGETS ${@PROJECT_NAME@_UNITTEST_NAME}
+      RUNTIME
+      DESTINATION build/bin
+      COMPONENT main)
 endif()  
 
-
-
-    
-    
