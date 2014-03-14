@@ -10,5 +10,5 @@ add_executable(${PROJECT_NAME} ${@PROJECT_NAME@_SOURCES})
 
 install(TARGETS ${PROJECT_NAME}
     RUNTIME
-    DESTINATION build
+    DESTINATION build/bin
     COMPONENT main)

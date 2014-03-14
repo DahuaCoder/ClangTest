@@ -20,7 +20,7 @@ else
 fi
 
 rm -rf build
-mkdir -p build
+mkdir -p build/bin
 cd build
 cmake ..
 
